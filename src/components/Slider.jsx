@@ -1,6 +1,7 @@
 import { ArrowLeftOutlined, ArrowRightOutlined } from '@material-ui/icons';
-import React from 'react';
+import React, { useState } from 'react';
 import styled from 'styled-components';
+import {sliderItems} from '../data';
 
 const Container = styled.div`
     width: 100%;
@@ -33,7 +34,8 @@ const Arrow = styled.div`
 const Wrapper = styled.div`
     height: 100%;
     display:flex;
-    transform: translateX(0vw);
+    transition: all 2s ease;
+    transform: translateX(${(props) => props.slideIndex * -100}vw);
 `
 
 const Slide = styled.div`
@@ -41,7 +43,7 @@ const Slide = styled.div`
     height: 100vh;
     display:flex;
     align-items: center;
-    background-color: #${props => props.bg}
+    background-color: #${(props) => props.bg};
 `
 const ImgContainer = styled.div`
     height: 100%;
@@ -74,45 +76,33 @@ const Button = styled.button`
 `
 
 const Slider = () => {
-
-  const handleClick = (direction) =>{}
+    const [slideIndex, setSlideIndex] = useState(0);
+    const handleClick = (direction) => {
+      if (direction === "left") {
+        setSlideIndex(slideIndex > 0 ? slideIndex - 1 : 2);
+      } else {
+        setSlideIndex(slideIndex < 2 ? slideIndex + 1 : 0);
+      }
+    };
 
   return (
         <Container>
             <Arrow direction="left" onClick={()=>handleClick("left")}>
                 <ArrowLeftOutlined/>
             </Arrow>
-            <Wrapper>
-                <Slide bg="f5fafd">
+            <Wrapper slideIndex={slideIndex}>
+                {sliderItems.map((item)=>(
+                    <Slide bg={item.bg} key={item.id}>
                     <ImgContainer>
-                        <Image src="https://i.ibb.co/XsdmR2c/1.png"></Image>
+                        <Image src={item.img}></Image>
                     </ImgContainer>
                     <InfoContainer>
-                        <Title>SUMMER SALE</Title>
-                        <Description>DON'T COMPROMISE ON STYLE! GET FLAT 30% OOF FOR NEW ARRIVALS</Description>
+                        <Title>{item.title}</Title>
+                        <Description>{item.desc}</Description>
                         <Button>SHOP NOW</Button>
                     </InfoContainer>
                 </Slide>
-                <Slide bg="fcf1ed"> 
-                    <ImgContainer>
-                        <Image src="https://i.ibb.co/XsdmR2c/1.png"></Image>
-                    </ImgContainer>
-                    <InfoContainer>
-                        <Title>WINTER SALE</Title>
-                        <Description>DON'T COMPROMISE ON STYLE! GET FLAT 30% OOF FOR NEW ARRIVALS</Description>
-                        <Button>SHOP NOW</Button>
-                    </InfoContainer>
-                </Slide>
-                <Slide bg="fbf0f4">
-                    <ImgContainer>
-                        <Image src="https://i.ibb.co/XsdmR2c/1.png"></Image>
-                    </ImgContainer>
-                    <InfoContainer>
-                        <Title>POPULAR SALE</Title>
-                        <Description>DON'T COMPROMISE ON STYLE! GET FLAT 30% OOF FOR NEW ARRIVALS</Description>
-                        <Button>SHOP NOW</Button>
-                    </InfoContainer>
-                </Slide>
+                ))}
             </Wrapper>
             <Arrow direction="right" onClick={()=>handleClick("right")}>
                 <ArrowRightOutlined/>
