@@ -124,7 +124,7 @@ const Product = () => {
             }
         }
         getProduct();
-    },[])
+    },[id])
 
     const handleQuantity = (type) =>{
         if(type === "dec"){
