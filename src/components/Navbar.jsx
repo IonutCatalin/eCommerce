@@ -3,6 +3,8 @@ import styled from 'styled-components';
 import {Search, ShoppingCartOutlined} from '@material-ui/icons';
 import { Badge } from '@material-ui/core';
 import {mobile} from "../responsive"
+import { useSelector } from 'react-redux';
+import { Link } from 'react-router-dom';
 
 const Container = styled.div`
     ${mobile({height: "60px"})}
@@ -68,28 +70,32 @@ const MenuItem = styled.div`
 `
 
 const Navbar = () => {
-  return (
-    <Container>
-        <Wrapper>
-            <Left>
-                <Language>EN</Language>
-                <SearchContainer>
-                    <Input placeholder='Search'/>
-                    <Search style={{color: "gray", fontSize: "16px"}}/>
-                </SearchContainer>
-            </Left>
-            <Center><Logo>LAMA.</Logo></Center>
-            <Right>
-                <MenuItem>REGISTER</MenuItem>
-                <MenuItem>SIGN IN</MenuItem>
-                <MenuItem>
-                    <Badge badgeContent={4} color="primary">
-                        <ShoppingCartOutlined color="action" />
-                    </Badge>
-                </MenuItem>
-            </Right>
-        </Wrapper>
-    </Container>
+    const quantity = useSelector(state=>state.cart.quantity);
+
+    return (
+        <Container>
+            <Wrapper>
+                <Left>
+                    <Language>EN</Language>
+                    <SearchContainer>
+                        <Input placeholder='Search'/>
+                        <Search style={{color: "gray", fontSize: "16px"}}/>
+                    </SearchContainer>
+                </Left>
+                <Center><Logo>LAMA.</Logo></Center>
+                <Right>
+                    <MenuItem>REGISTER</MenuItem>
+                    <MenuItem>SIGN IN</MenuItem>
+                    <Link to="/cart">
+                        <MenuItem>
+                            <Badge badgeContent={quantity} color="primary">
+                                <ShoppingCartOutlined color="action" />
+                            </Badge>
+                        </MenuItem>
+                    </Link>
+                </Right>
+            </Wrapper>
+        </Container>
     );
 };
 
